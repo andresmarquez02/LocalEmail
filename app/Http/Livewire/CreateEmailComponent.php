@@ -27,7 +27,6 @@ class CreateEmailComponent extends Component
             "email" => "email|required",
             "subject" => "required|max:255",
             "description" => "required",
-            "password" => "required"
         ]);
 
         DB::beginTransaction();
@@ -43,7 +42,8 @@ class CreateEmailComponent extends Component
                 "email_id" => $email->id,
             ]);
 
-            foreach ($this->files as $value) {
+            // Archivos para adjuntar
+            foreach($this->files as $value) {
                 $url = $value->store("files_emails");
                 $file_id = File::create([
                     "file" => $url,
@@ -59,6 +59,7 @@ class CreateEmailComponent extends Component
             return redirect()->to("emails/sends");
 
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollBack();
             $this->dispatchBrowserEvent("error", ["error" => "Ocurrio un error inesperado..."]);
         }

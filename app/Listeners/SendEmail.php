@@ -6,6 +6,7 @@ use App\Email as AppEmail;
 use App\Events\Email;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -36,26 +37,27 @@ class SendEmail
         try {
             // Server settings
             $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->Host       = 'smtp.mailtrap.io';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = auth()->user()->email;                     //SMTP username
-            $mail->Password   = $event->data["password"];                               //SMTP password
+            $mail->Username   = "c36c2ae1b707ee";                     //SMTP username
+            $mail->Password   = 'b13b48455e8c84';                               //SMTP password
             $mail->SMTPSecure = 'tls';         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-            $mail->Port       = 587;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+            $mail->Port       = 2525;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
             //Recipients
             $mail->setFrom(auth()->user()->email);
             $mail->addAddress($email->email_send);
             //Attachment
-            foreach ($email->files() as $value) {
-                $mail->attachment = $value->file;
-            }
+
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
+            // foreach ($email->files as $value) {
+            //     $mail->AddAttachment(asset("files_emails/".$value->file));
+            // }
             $mail->Subject = $email->subject;
             $mail->Body = $email->description;
             $mail->send();
-            break;
+            // break;
         } catch (Exception $e) {
             dd($e);
         }

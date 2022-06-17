@@ -16,12 +16,6 @@
                     <small>{{$message}}</small>
                 @enderror
             </div>
-            <div class="form-group col-lg-12">
-                <input class="form-control" placeholder="Contraseña de su correo:" name="password" wire:model="password">
-                @error("password")
-                    <small>{{$message}}</small>
-                @enderror
-            </div>
             <div class="form-group col-12">
                 <textarea  class="textarea_editor form-control" name="description" wire:model="description" rows="7" placeholder="Descripcion ..."></textarea>
                 @error("description")
@@ -37,6 +31,7 @@
                     <small>{{$message}}</small>
                 @enderror
             </div>
+
             <div class="col-12">
                 <button type="submit" class="mt-2 btn btn-success">
                     <i class="mdi mdi-send"></i> Enviar
